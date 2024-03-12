@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турниры - Покер онлайн</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Турниры</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="profile.html">Мой профиль</a></li>
+                <li><a href="game.html">Играть</a></li>
+                <li><a href="tournaments.html">Турниры</a></li>
+                <li><a href="rating.html">Рейтинг</a></li>
+                <li><a href="rules.html">Правила</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Прошу к регистрации</h2>
+        <section class="tournaments">
+            <div class="registration-card">
+                <div class="form-section">
+                    <form action="#" method="post">
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="name" required>
+                        <label for="number">Номер:</label>
+                        <input type="text" id="number" name="number" required>
+                        <label for="email">Почта:</label>
+                        <input type="email" id="email" name="email" required>
+                    </form>
+                </div>
+                <div class="tournament-info">
+                    <h3>Информация о турнире</h3>
+                    <p><strong>Дата проведения:</strong> 25 февраля 2024</p>
+                    <p><strong>Время проведения:</strong> 18:00</p>
+                    <p><strong>Количество участников:</strong> 50</p>
+                    <p><strong>Минимальный взнос:</strong> $100</p>
+                </div>
+            </div>
+            <button class="shuffle-button" type="submit">Отправить в колоду</button>
+            <div class="deck">
+                <!-- Вставьте изображение колоды карт здесь -->
+                <img src="images/kolo.png" alt="Колода карт">
+            </div>  
+        </section>
+        
+    </main>
+    <footer>
+        <p>&copy; 2024 Покер онлайн</p>
+    </footer>
+</body>
+</html>
