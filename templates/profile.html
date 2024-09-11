@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой профиль - Покер онлайн</title>
-    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
 </head>
 <body>
     <header>
@@ -26,7 +26,7 @@
             <h2>Ваш профиль</h2>
             <div class="profile-card">
                 <div class="avatar">
-                    <img src="images/avatar.jpg" alt="Аватар">
+                    <img src="static/images/avatar.jpg" alt="Аватар">
                 </div>
                 <div class="info">
                     <p><strong>Имя:</strong> Иванов Иван</p>

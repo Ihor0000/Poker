@@ -1,32 +1,8 @@
+
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template
 import random
 app = Flask(__name__)
-
-
-
-# Функция для генерации колоды кар
-# Определяем базовый набор карт
-cards = {
-    '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
-    'J': 11, 'Q': 12, 'K': 13, 'A': 14
-}
-
-# Создаем функцию для определения руки игрока
-def calculate_hand(hand):
-    total = 0
-    for card in hand:
-        total += cards[card]
-    return total
-
-# Основной маршрут для отображения страницы игры
-@app.route('/')
-def game():
-    player_hand = ['A', 'K']  # Пример начальной руки игрока (можно изменить)
-    return render_template('game.html', player_hand=player_hand)
-
-# Функция для генерации колоды кар
-
 
 
 @app.route('/')
