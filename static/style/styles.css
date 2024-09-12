@@ -233,8 +233,8 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    left: 50%;
-    top: 50%;
+    left: 36%;
+    top: 36%;
     transform: translate(-50%, -50%);
 }
 
