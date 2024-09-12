@@ -1,6 +1,6 @@
 
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import random
 app = Flask(__name__)
 
@@ -14,6 +14,9 @@ def baseindex():
 def profile():
     return render_template('profile.html')
 
+@app.route('/game.html')
+def game():
+    return render_template('game.html')
 
 @app.route('/tournaments.html')
 def tournaments():
@@ -30,6 +33,16 @@ def rules():
 @app.route('/about.html')
 def about():
     return render_template('about.html')
+
+@app.route('/start-game', methods=['POST'])
+def start_game():
+    bot_count = int(request.form.get('bot_count'))
+    total_players = bot_count + 1  # Один реальный игрок и остальные боты
+
+    players = [{'name': f'Bot {i+1}'} for i in range(bot_count)]
+    players.insert(0, {'name': 'You'})  # Добавляем реального игрока первым
+
+    return render_template('game.html', players=players, total_players=total_players)
 
 if __name__ == '__main__':
     app.run(debug=True)

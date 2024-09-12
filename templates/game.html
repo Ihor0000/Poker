@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Poker Game</title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
 </head>
 <body>
     <header>
@@ -21,20 +21,46 @@
             </ul>
         </nav>
     </header>
+
     <main>
-        <div class="container">
-        <h1>Poker Game</h1>
-        <div class="player-hand">
-            <h2>Your Hand</h2>
-            <div class="cards">
-                {% for card in player_hand %}
-                    <div class="card">{{ card }}</div>
+        <!-- Форма выбора количества ботов -->
+        {% if not players %}
+        <div id="bot-selection-form" class="form-container">
+            <h2>Выберите количество ботов:</h2>
+            <form action="/start-game" method="POST">
+                <label for="bot-count">Количество ботов:</label>
+                <select name="bot_count" id="bot-count">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <br><br>
+                <button type="submit">Начать игру</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Стол с игроками -->
+        {% if players %}
+        <div id="poker-table">
+            <h2>Покерный стол</h2>
+            <div class="table">
+                {% for player in players %}
+                    <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(200px) rotate(-{{ loop.index * 360 / total_players }}deg);">
+                        <p>{{ player.name }}</p>
+                        <div class="cards">
+                            <div class="card">?</div>
+                            <div class="card">?</div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
-    </div>
-
+        {% endif %}
     </main>
+
     <footer>
         <p>&copy; 2024 Покер онлайн</p>
     </footer>
