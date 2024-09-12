@@ -36,6 +36,12 @@ main {
     padding: 20px;
 }
 
+/* Отступ между игровым столом и шапкой сайта */
+.poker-table-container {
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
 footer {
     background-color: #222;
     color: #fff;
@@ -89,6 +95,22 @@ footer {
     background-color: #228B22;
 }
 
+.table-info {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+}
+
+.table-info h3 {
+    padding-top:50px;
+    margin: 200;
+    color: #fff;
+}
+
+/* Игроки */
 .player {
     position: absolute;
     width: 100px;
@@ -125,7 +147,7 @@ footer {
 /* Карты крупье */
 .dealer-cards {
     position: absolute;
-    top: 20px;
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -204,4 +226,23 @@ footer {
 
 .action-buttons button:hover {
     background-color: #0056b3;
+}
+/* Логи и действия игры */
+.game-logs {
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    max-width: 800px; /* Установка максимальной ширины поля для логов */
+    margin: 20px auto;
+}
+
+#logs {
+    height: 200px; /* Установка начальной высоты поля для логов */
+    width: 780px;
+    overflow-y: scroll; /* Добавление вертикальной прокрутки, если содержимого больше, чем высота */
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

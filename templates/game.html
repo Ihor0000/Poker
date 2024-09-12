@@ -46,8 +46,11 @@
         <!-- Стол с игроками -->
         {% if players %}
         <div id="poker-table" class="poker-table-container">
-            <h2>Покерный стол</h2>
+            <h2>Покерный стол ID: {{ game_id }}</h2>
             <div class="table">
+                <div class="table-info">
+                    <h3>Карты на столе</h3>
+                </div>
                 {% for player in players %}
                     <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(200px) rotate(-{{ loop.index * 360 / total_players }}deg);">
                         <p>{{ player.name }}</p>
@@ -82,6 +85,11 @@
                 <button id="raise-button">Рейз</button>
                 <button id="fold-button">Фолд</button>
             </div>
+        </div>
+        <!-- Логи и действия игры -->
+        <div id="game-logs" class="game-logs">
+            <h3>Логи игры</h3>
+            <textarea id="logs" rows="10" readonly></textarea>
         </div>
         {% endif %}
     </main>
