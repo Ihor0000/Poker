@@ -49,7 +49,7 @@
             <h2>Покерный стол</h2>
             <div class="table">
                 {% for player in players %}
-                    <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(300px) rotate(-{{ loop.index * 360 / total_players }}deg);">
+                    <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(200px) rotate(-{{ loop.index * 360 / total_players }}deg);">
                         <p>{{ player.name }}</p>
                         <div class="cards">
                             <div class="card">?</div>
@@ -57,45 +57,30 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div>
-
-            <!-- Карты крупье -->
-            <div class="dealer-cards">
-                <h3>Карты на столе</h3>
-                <div class="cards">
-                    {% for card in dealer_cards %}
+                <!-- Карты крупье -->
+                <div class="dealer-cards">
+                    {% for card in dealer_hand %}
                         <div class="card">{{ card }}</div>
                     {% endfor %}
                 </div>
             </div>
-
             <!-- Карты игрока -->
             <div class="player-hand">
                 <h3>Ваша рука</h3>
                 <div class="cards">
                     {% for card in player_hand %}
-                        <div class="card large-card">{{ card }}</div>
+                        <div class="card">{{ card }}</div>
                     {% endfor %}
                 </div>
             </div>
-
-            <!-- Дублированные карты игрока -->
-            <div class="player-hand-duplicate">
-                <div class="cards">
-                    {% for card in player_hand %}
-                        <div class="card large-card">{{ card }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Кнопки действий -->
+            <!-- Поле для ставки и кнопки действий -->
             <div class="action-buttons">
-                <button class="action-button">Чек</button>
-                <button class="action-button">Бет</button>
-                <button class="action-button">Кол</button>
-                <button class="action-button">Рейз</button>
-                <button class="action-button">Фолд</button>
-                <input type="number" placeholder="Ваша ставка">
+                <input type="number" id="bet-amount" placeholder="Ставка">
+                <button id="check-button">Чек</button>
+                <button id="bet-button">Бет</button>
+                <button id="call-button">Кол</button>
+                <button id="raise-button">Рейз</button>
+                <button id="fold-button">Фолд</button>
             </div>
         </div>
         {% endif %}
