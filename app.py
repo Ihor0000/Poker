@@ -103,7 +103,6 @@ def bot_turns():
         if isinstance(player, Bot):
             # Обновляем лучшую комбинацию для каждого бота с учётом общих карт
             player.best_hand = HandEvaluator.evaluate_player_hand(player.hand + community_cards)
-
             bot_action = player.bot_action(game_data['players'], current_bet, pot, community_cards)
 
             if bot_action == 'ф':  # Фолд
