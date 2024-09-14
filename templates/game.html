@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Game</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -78,19 +79,76 @@
             </div>
             <!-- Поле для ставки и кнопки действий -->
             <div class="action-buttons">
-                <input type="number" id="bet-amount" placeholder="Ставка">
                 <button id="check-button">Чек</button>
                 <button id="bet-button">Бет</button>
                 <button id="call-button">Кол</button>
                 <button id="raise-button">Рейз</button>
                 <button id="fold-button">Фолд</button>
             </div>
+            <div class="action-buttons">
+                <input type="number" id="bet-amount" placeholder="Ставка">
+            </div>
+            <div id="response"></div>
+             <script>
+                $(document).ready(function() {
+                    function sendAction(action) {
+                        let bet = $('#bet-amount').val() || 0;
+                        $.ajax({
+                            url: '/action',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ action: action, bet: bet }),
+                            success: function(response) {
+                                $('#response').html(response.response);
+                            }
+                        });
+                    }
+
+                    $('#check-button').click(function() {
+                        sendAction('ч');
+                    });
+
+                    $('#bet-button').click(function() {
+                        sendAction('б');
+                    });
+
+                    $('#call-button').click(function() {
+                        sendAction('к');
+                    });
+
+                    $('#raise-button').click(function() {
+                        sendAction('р');
+                    });
+
+                    $('#fold-button').click(function() {
+                        sendAction('ф');
+                    });
+                });
+            </script>
         </div>
-        <!-- Логи и действия игры -->
-        <div id="game-logs" class="game-logs">
-            <h3>Логи игры</h3>
-            <textarea id="logs" rows="10" readonly></textarea>
-        </div>
+        <!-- Логи игры -->
+            <div id="game-logs" class="game-logs">
+                <h3>Логи игры</h3>
+                <textarea id="logs" rows="10" readonly></textarea>
+            </div>
+
+            <script>
+                function updateLogs() {
+                    $.ajax({
+                        url: '/add_log',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ log: тестттттт }), // Пример текста, замените на актуальный
+                        success: function(response) {
+                            $('#logs').val(response.logs);
+                        }
+                    });
+                }
+                // Запуск обновления логов 2 раза в секунду
+                    $(document).ready(function() {
+                        setInterval(updateLogs, 500);  // 500 миллисекунд = 0.5 секунды, 2 вызова в секунду
+                    });
+            </script>
         {% endif %}
     </main>
 
