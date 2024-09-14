@@ -378,7 +378,7 @@ def start_game():
                         add_log("Еще нет активной ставки.")
                 elif playerAction == 'б':
                     try:
-                        bet_amount = int(input("Введите сумму ставки: "))
+                        bet_amount = bet_amount
                         if bet_amount <= player.money:
                             player.money -= bet_amount
                             pot += bet_amount
@@ -393,7 +393,7 @@ def start_game():
                 elif playerAction == 'р':
                     if player.money > current_bet - player.current_bet:
                         try:
-                            raise_amount = int(input("Введите сумму повышения ставки: "))
+                            raise_amount = bet_amount
                             if raise_amount >= current_bet * 2 and raise_amount <= player.money + player.current_bet:
                                 player.money -= (raise_amount - player.current_bet)
                                 pot += (raise_amount - player.current_bet)
@@ -480,6 +480,7 @@ def profile():
 
 @app.route('/game.html')
 def game():
+    #def start_game():
     return render_template('game.html')
 
 @app.route('/tournaments.html')
@@ -536,3 +537,4 @@ def start_game():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    add_log("Добро пожаловать в игру Техасский покер в консоли!")
