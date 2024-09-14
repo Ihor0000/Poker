@@ -15,6 +15,9 @@ game_data = {
     'logs': []
 }
 
+# Названия этапов игры
+round_names = ['Префлоп', 'Флоп', 'Тёрн', 'Ривер']
+
 @app.route('/')
 @app.route('/index.html')
 def baseindex():
@@ -64,7 +67,8 @@ def player_action():
     pot = game_data['pot']
 
     if action == 'fold':
-        game_data['logs'].append(f"{player.name} сделал фолд.")
+        player.hand = []  # Игрок выбивает из игры
+        game_data['logs'].append(f"{player.name} сделал фолд и выбыл из игры.")
     elif action == 'check':
         game_data['logs'].append(f"{player.name} сделал чек.")
     elif action == 'bet':
@@ -77,14 +81,15 @@ def player_action():
         game_data['pot'] += current_bet
         game_data['logs'].append(f"{player.name} уравнял ставку.")
 
+    # Ходы ботов
     bot_turns()
 
-    # Раздача общих карт по раундам
+    # Переход на следующий раунд, раздача карт
     if game_data['round_num'] < 4:
         game_data['round_num'] += 1
         deal_community_cards()
 
-    # Если раунды закончились, определяем победителя
+    # Если игра завершена (раунд ривера завершён), определяем победителя
     if game_data['round_num'] == 4:
         determine_winner()
 
@@ -96,12 +101,13 @@ def bot_turns():
     pot = game_data['pot']
 
     for player in game_data['players'][1:]:
-        if isinstance(player, Bot):
+        if isinstance(player, Bot) and player.hand:  # Если бот не выбыл из игры
             player.best_hand = HandEvaluator.evaluate_player_hand(player.hand + community_cards)
             bot_action = player.bot_action(game_data['players'], current_bet, pot, community_cards)
 
             if bot_action == 'ф':
-                game_data['logs'].append(f"Бот {player.name} сделал фолд.")
+                player.hand = []  # Бот выбивает из игры
+                game_data['logs'].append(f"Бот {player.name} сделал фолд и выбыл из игры.")
             elif bot_action == 'к':
                 player.money -= current_bet
                 game_data['pot'] += current_bet
@@ -118,6 +124,11 @@ def bot_turns():
                 game_data['logs'].append(f"Бот {player.name} повысил ставку до {raise_amount}.")
 
 def deal_community_cards():
+    round_name = round_names[game_data['round_num'] - 1]
+    game_data['logs'].append(f"Раунд: {round_name}")
+    game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
+    game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
+
     if game_data['round_num'] == 1:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(3)]
         game_data['logs'].append("Флоп: на столе 3 карты.")
@@ -132,15 +143,21 @@ def determine_winner():
     best_hand_name = ""
     best_hand_cards = []
 
-    for player in game_data['players']:
-        hand_rank, hand_name, best_cards = HandEvaluator.evaluate_player_hand(player.hand + community_cards)
-        if hand_rank > best_hand_rank:
-            best_hand_rank = hand_rank
-            best_hand_name = hand_name
-            best_hand_cards = best_cards
-            best_player = player
+    game_data['logs'].append("\nОкончание игры. Все карты игроков:")
 
-    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'.")
+    for player in game_data['players']:
+        if player.hand:  # Если игрок не выбыл
+            hand_rank, hand_name, best_cards = HandEvaluator.evaluate_player_hand(player.hand + community_cards)
+            if hand_rank > best_hand_rank:
+                best_hand_rank = hand_rank
+                best_hand_name = hand_name
+                best_hand_cards = best_cards
+                best_player = player
+            # Показать все карты игрока и его лучшую комбинацию
+            game_data['logs'].append(f"{player.name}: карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}.")
+
+    game_data['logs'].append(f"\nПобедитель: {best_player.name} с комбинацией '{best_hand_name}'.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
