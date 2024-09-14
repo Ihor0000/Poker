@@ -128,9 +128,16 @@ class Player:
 
         cursor.execute("SELECT name, status, money FROM players WHERE id = %s", (player_id,))
         player_data = cursor.fetchone()
-        self.name = player_data[0]
-        self.status = player_data[1]
-        self.money = player_data[2]
+
+        if player_data:
+            self.name = player_data[0]
+            self.status = player_data[1]
+            self.money = player_data[2]
+        else:
+            # Если игрок не найден в базе данных, установим дефолтные значения
+            self.name = f"Player_{player_id}"
+            self.status = 1
+            self.money = 1000  # Начальная сумма денег
 
     def draw_card(self, card):
         self.hand.append(card)

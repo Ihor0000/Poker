@@ -77,20 +77,25 @@
                 </div>
             </div>
             <!-- Поле для ставки и кнопки действий -->
-            <div class="action-buttons">
-                <input type="number" id="bet-amount" placeholder="Ставка">
-                <button id="check-button">Чек</button>
-                <button id="bet-button">Бет</button>
-                <button id="call-button">Кол</button>
-                <button id="raise-button">Рейз</button>
-                <button id="fold-button">Фолд</button>
+                <div class="action-buttons">
+                    <form action="/player-action" method="POST">
+                        <input type="number" name="bet_amount" id="bet-amount" placeholder="Ставка">
+                        <button type="submit" name="action" value="check" id="check-button">Чек</button>
+                        <button type="submit" name="action" value="bet" id="bet-button">Бет</button>
+                        <button type="submit" name="action" value="call" id="call-button">Кол</button>
+                        <button type="submit" name="action" value="fold" id="fold-button">Фолд</button>
+                    </form>
+                </div>
+        </div>
+        <!-- Логи игры -->
+            <div id="game-logs" class="game-logs">
+                <h3>Логи игры</h3>
+                <textarea id="logs" rows="10" readonly>
+                    {% for log in logs %}
+                        {{ log }}
+                    {% endfor %}
+                </textarea>
             </div>
-        </div>
-        <!-- Логи и действия игры -->
-        <div id="game-logs" class="game-logs">
-            <h3>Логи игры</h3>
-            <textarea id="logs" rows="10" readonly></textarea>
-        </div>
         {% endif %}
     </main>
 
