@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Турниры - Покер онлайн</title>
-    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
 </head>
 <body>
     <header>
@@ -36,7 +36,7 @@
                     </form>
                 </div>
                 <div class="tournament-info">
-                    <h3>Информация о турнире</h3>
+                    <h6>Информация о турнире</h6>
                     <p><strong>Дата проведения:</strong> 25 февраля 2024</p>
                     <p><strong>Время проведения:</strong> 18:00</p>
                     <p><strong>Количество участников:</strong> 50</p>
@@ -46,7 +46,7 @@
             <button class="shuffle-button" type="submit">Отправить в колоду</button>
             <div class="deck">
                 <!-- Вставьте изображение колоды карт здесь -->
-                <img src="images/kolo.png" alt="Колода карт">
+                <img src="static/images/kolo.png" alt="Колода карт">
             </div>  
         </section>
         

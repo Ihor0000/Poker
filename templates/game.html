@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Poker Game</title>
-     <link rel="stylesheet" href="style/styles.css">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -21,20 +22,136 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <div class="container">
-        <h1>Poker Game</h1>
-        <div class="player-hand">
-            <h2>Your Hand</h2>
-            <div class="cards">
-                {% for card in player_hand %}
-                    <div class="card">{{ card }}</div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 
+    <main>
+        <!-- Форма выбора количества ботов -->
+        {% if not players %}
+        <div id="bot-selection-form" class="form-container">
+            <h2>ID игры: {{ game_id }}</h2>
+            <h3>Выберите количество ботов:</h3>
+            <form action="/start-game" method="POST">
+                <label for="bot-count">Количество ботов:</label>
+                <select name="bot_count" id="bot-count">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <br><br>
+                <button type="submit">Начать игру</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Стол с игроками -->
+        {% if players %}
+        <div id="poker-table" class="poker-table-container">
+            <h2>Покерный стол ID: {{ game_id }}</h2>
+            <div class="table">
+                <div class="table-info">
+                    <h3>Карты на столе</h3>
+                </div>
+                {% for player in players %}
+                    <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(200px) rotate(-{{ loop.index * 360 / total_players }}deg);">
+                        <p>{{ player.name }}</p>
+                        <div class="cards">
+                            <div class="card">?</div>
+                            <div class="card">?</div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- Карты крупье -->
+                <div class="dealer-cards">
+                    {% for card in dealer_hand %}
+                        <div class="card">{{ card }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Карты игрока -->
+            <div class="player-hand">
+                <h3>Ваша рука</h3>
+                <div class="cards">
+                    {% for card in player_hand %}
+                        <div class="card">{{ card }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Поле для ставки и кнопки действий -->
+            <div class="action-buttons">
+                <button id="check-button">Чек</button>
+                <button id="bet-button">Бет</button>
+                <button id="call-button">Кол</button>
+                <button id="raise-button">Рейз</button>
+                <button id="fold-button">Фолд</button>
+            </div>
+            <div class="action-buttons">
+                <input type="number" id="bet-amount" placeholder="Ставка">
+            </div>
+            <div id="response"></div>
+             <script>
+                $(document).ready(function() {
+                    function sendAction(action) {
+                        let bet = $('#bet-amount').val() || 0;
+                        $.ajax({
+                            url: '/action',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ action: action, bet: bet }),
+                            success: function(response) {
+                                $('#response').html(response.response);
+                            }
+                        });
+                    }
+
+                    $('#check-button').click(function() {
+                        sendAction('ч');
+                    });
+
+                    $('#bet-button').click(function() {
+                        sendAction('б');
+                    });
+
+                    $('#call-button').click(function() {
+                        sendAction('к');
+                    });
+
+                    $('#raise-button').click(function() {
+                        sendAction('р');
+                    });
+
+                    $('#fold-button').click(function() {
+                        sendAction('ф');
+                    });
+                });
+            </script>
+        </div>
+        <!-- Логи игры -->
+            <div id="game-logs" class="game-logs">
+                <h3>Логи игры</h3>
+                <textarea id="logs" rows="10" readonly></textarea>
+            </div>
+
+            <script>
+                function updateLogs() {
+                    $.ajax({
+                        url: '/add_log',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ log: тестттттт }), // Пример текста, замените на актуальный
+                        success: function(response) {
+                            $('#logs').val(response.logs);
+                        }
+                    });
+                }
+                // Запуск обновления логов 2 раза в секунду
+                    $(document).ready(function() {
+                        setInterval(updateLogs, 500);  // 500 миллисекунд = 0.5 секунды, 2 вызова в секунду
+                    });
+            </script>
+        {% endif %}
     </main>
+
     <footer>
         <p>&copy; 2024 Покер онлайн</p>
     </footer>
