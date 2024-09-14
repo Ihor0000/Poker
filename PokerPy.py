@@ -141,7 +141,7 @@ class Player:
 
     def draw_card(self, card):
         self.hand.append(card)
-        # После того, как игрок получает карту, оцениваем его лучшую комбинацию
+        # Оцениваем комбинацию карт после каждой раздачи
         self.best_hand = HandEvaluator.evaluate_player_hand(self.hand)
 
     def show_hand(self):
@@ -149,7 +149,6 @@ class Player:
         status_symbol = status_symbols.get(str(self.status), '?')
         hand_str = ", ".join(map(str, self.hand))
         return f"\n{status_symbol} {self.player_id}: {self.name}, в руке: {hand_str}, деньги: {self.money}$, его ставка: {self.current_bet}$"
-
 
 
 class Bot(Player):
