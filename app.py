@@ -16,7 +16,7 @@ game_data = {
 }
 
 # Названия этапов игры
-round_names = ['Префлоп', 'Флоп', 'Тёрн', 'Ривер']
+round_names = ['Префлоп', 'Флоп', 'Тёрн', 'Ривер', 'Спасибо за игру']
 
 @app.route('/')
 @app.route('/index.html')
@@ -50,7 +50,28 @@ def start_game():
     game_data['pot'] = 0
     game_data['current_bet'] = 0
     game_data['round_num'] = 0
-    game_data['logs'] = ["Игра началась!"]
+    game_data['logs'] = ["***********Игра началась***********"]
+
+    # Взнос каждого игрока в банк
+    for player in game_data['players']:
+        player.money -= 10
+        game_data['pot'] += 10
+        game_data['logs'].append(f"{player.name} внес 10$ в банк.")
+
+    # Выбираем двух случайных игроков для обязательных ставок
+    blinds_players = random.sample(game_data['players'], 2)
+    blinds_players[0].money -= 10
+    blinds_players[0].current_bet = 10
+    game_data['pot'] += 10
+    game_data['logs'].append(f"{blinds_players[0].name} сделал обязательную ставку 10$ (большой блайнд).")
+
+    blinds_players[1].money -= 5
+    blinds_players[1].current_bet = 5
+    game_data['pot'] += 5
+    game_data['logs'].append(f"{blinds_players[1].name} сделал обязательную ставку 5$ (малый блайнд).")
+
+    game_data['logs'].append(f"*********** Префлоп ***********")
+    game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
 
     # Раздаём по две карты каждому игроку
     for player in game_data['players']:
@@ -77,9 +98,11 @@ def player_action():
         game_data['current_bet'] = bet_amount
         game_data['logs'].append(f"{player.name} поставил {bet_amount}.")
     elif action == 'call':
-        player.money -= current_bet
-        game_data['pot'] += current_bet
-        game_data['logs'].append(f"{player.name} уравнял ставку.")
+        call_amount = current_bet - player.current_bet
+        player.money -= call_amount
+        game_data['pot'] += call_amount
+        player.current_bet = current_bet
+        game_data['logs'].append(f"{player.name} уравнял ставку на {call_amount}$.")
 
     # Ходы ботов
     bot_turns()
@@ -109,9 +132,11 @@ def bot_turns():
                 player.hand = []  # Бот выбивает из игры
                 game_data['logs'].append(f"Бот {player.name} сделал фолд и выбыл из игры.")
             elif bot_action == 'к':
-                player.money -= current_bet
-                game_data['pot'] += current_bet
-                game_data['logs'].append(f"Бот {player.name} уравнял ставку.")
+                call_amount = current_bet - player.current_bet
+                player.money -= call_amount
+                game_data['pot'] += call_amount
+                player.current_bet = current_bet
+                game_data['logs'].append(f"Бот {player.name} уравнял ставку на {call_amount}$.")
             elif bot_action == 'б':
                 bet_amount = min(random.randint(current_bet, player.money), player.money)
                 player.money -= bet_amount
@@ -124,17 +149,15 @@ def bot_turns():
                 game_data['logs'].append(f"Бот {player.name} повысил ставку до {raise_amount}.")
 
 def deal_community_cards():
-    round_name = round_names[game_data['round_num'] - 1]
-    game_data['logs'].append(f"Раунд: {round_name}")
-    game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
-    game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
-
+    round_name = round_names[game_data['round_num']]
     if game_data['round_num'] == 1:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(3)]
-        game_data['logs'].append("Флоп: на столе 3 карты.")
-    elif game_data['round_num'] in [2, 3]:
-        game_data['community_cards'].append(game_data['deck'].deal())
-        game_data['logs'].append(f"Открыта карта {game_data['round_num']}-го раунда.")
+    elif game_data['round_num'] >= 0:
+        game_data['community_cards'] += [game_data['deck'].deal() for _ in range(1)]
+
+    game_data['logs'].append(f"*********** {round_name}***********")
+    game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
+    game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
 
 def determine_winner():
     community_cards = game_data['community_cards']
@@ -143,7 +166,8 @@ def determine_winner():
     best_hand_name = ""
     best_hand_cards = []
 
-    game_data['logs'].append("\nОкончание игры. Все карты игроков:")
+    game_data['logs'].append("***********Окончание игры***********")
+    game_data['logs'].append("Все карты игроков: ")
 
     for player in game_data['players']:
         if player.hand:  # Если игрок не выбыл
@@ -154,9 +178,9 @@ def determine_winner():
                 best_hand_cards = best_cards
                 best_player = player
             # Показать все карты игрока и его лучшую комбинацию
-            game_data['logs'].append(f"{player.name}: карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}.")
+            game_data['logs'].append(f"*{player.name}: * карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}.")
 
-    game_data['logs'].append(f"\nПобедитель: {best_player.name} с комбинацией '{best_hand_name}'.")
+    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'.")
 
 
 if __name__ == '__main__':
