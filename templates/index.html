@@ -22,7 +22,9 @@
             </ul>
         </nav>
     </header>
+
     <main>
+        <!-- Баннер -->
         <section class="hero">
             <div class="container">
                 <h2>Ощутите азарт и элегантность покера</h2>
@@ -30,27 +32,48 @@
                 <a href="game.html" class="btn">Начать игру</a>
             </div>
         </section>
-        <section class="features">
-            <div class="container">
-                <h2>Наши преимущества</h2>
-                <div class="feature">
-                    <img src="static/images/kolo.png" alt="Преимущество 1">
-                    <h3>Удобство использования</h3>
-                    <p>Мы предоставляем интуитивно понятный интерфейс, который позволит вам легко находиться в игре.</p>
-                </div>
-                <div class="feature">
-                    <img src="static/images/kolo.png" alt="Преимущество 2">
-                    <h3>Безопасность и надежность</h3>
-                    <p>Мы гарантируем безопасность ваших данных и справедливость игры благодаря передовым технологиям.</p>
-                </div>
-                <div class="feature">
-                    <img src="static/images/kolo.png" alt="Преимущество 3">
-                    <h3>Бонусы и акции</h3>
-                    <p>Принимайте участие в наших акциях и получайте бонусы за активность в игре.</p>
-                </div>
-            </div>
+
+        <!-- Новости о турнирах и акциях -->
+        <section class="news-banner">
+            <h2>Последние новости</h2>
+            <marquee behavior="scroll" direction="left">Турнир 15 сентября! Акция: 20% бонус к первому депозиту!</marquee>
         </section>
+
+        <!-- Таймер хода игрока -->
+        <section class="timer">
+            <p>Ваш ход закончится через: <span id="time">30</span> секунд</p>
+        </section>
+                <!-- Ближайшие турниры -->
+        <section class="upcoming-tournaments">
+            <h3>Ближайшие турниры</h3>
+            <ul>
+                <li>Турнир 1 - 15 сентября 2024</li>
+                <li>Турнир 2 - 25 сентября 2024</li>
+                <li>Турнир 3 - 5 октября 2024</li>
+            </ul>
+            <a href="tournaments.html" class="btn">Зарегистрироваться</a>
+        </section>
+
+        <!-- Форма обратной связи -->
+        <section class="feedback-form">
+            <h3>Оставьте ваши предложения и вопросы</h3>
+            <form>
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name">
+
+                <label for="email">Ваш email:</label>
+                <input type="email" id="email" name="email">
+
+                <label for="message">Сообщение:</label>
+                <textarea id="message" name="message"></textarea>
+
+                <button type="submit">Отправить</button>
+            </form>
+        </section>
+
+
     </main>
+
     <footer>
         <div class="container">
             <p>&copy; 2024 Покер онлайн</p>

@@ -1,5 +1,4 @@
 /* Общие стили */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,24 +13,24 @@ header {
     text-align: center;
 }
 
-    header h1 {
-        margin: 0;
-    }
+header h1 {
+    margin: 0;
+}
 
 nav ul {
     list-style-type: none;
     padding: 0;
 }
 
-    nav ul li {
-        display: inline;
-        margin-right: 20px;
-    }
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
 
 main {
     padding: 20px;
@@ -43,6 +42,202 @@ footer {
     padding: 20px 0;
     text-align: center;
 }
+
+/* Баннер */
+.hero {
+    background-image: url("static/images/poker_background.jpg");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero p {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.hero .btn {
+    font-size: 24px;
+    padding: 15px 40px;
+    background-color: #ff5722;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #e64a19;
+}
+
+/* Новости */
+.news-banner {
+    background-color: #ffcc00;
+    padding: 20px;
+    text-align: center;
+}
+
+.news-banner h2 {
+    font-size: 36px;
+}
+
+.news-banner marquee {
+    font-size: 24px;
+    color: #000;
+}
+
+/* Статистика игрока */
+.player-stats {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.player-stats h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.player-stats p {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Ближайшие турниры */
+.upcoming-tournaments {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-tournaments h3 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upcoming-tournaments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.upcoming-tournaments li {
+    font-size: 18px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.upcoming-tournaments li:last-child {
+    border-bottom: none;
+}
+
+.upcoming-tournaments .btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #4caf50;
+}
+
+/* Галерея победителей */
+.winners-gallery {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.winners-gallery h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.gallery img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Форма обратной связи */
+.feedback-form {
+    margin-top: 40px;
+}
+
+.feedback-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-form label {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.feedback-form button {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.feedback-form button:hover {
+    background-color: #45a049;
+}
+
+/* Текущие бонусы */
+.current-bonuses {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.current-bonuses h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.bonuses p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Таймер */
+.timer {
+    font-size: 28px;
+    color: #ff0000;
+    text-align: center;
+    margin-top: 20px;
+}
+
 
 /* Стили для каждой страницы */
 
