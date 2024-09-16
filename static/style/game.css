@@ -74,17 +74,18 @@ footer {
 /* Стол с игроками */
 .poker-table-container {
     margin: 20px 0;
+    text-align: center;
 }
 
 /* Прямоугольный стол */
 .table {
     position: relative;
-    width: 600px; /* Измените на желаемую ширину */
-    height: 400px; /* Измените на желаемую высоту */
+    width: 600px; /* Прямоугольный стол */
+    height: 400px;
     margin: 0 auto;
     border: 2px solid green;
-    border-radius: 10px; /* Скругление углов */
     background-color: #228B22;
+    border-radius: 10px;
 }
 
 /* Карты на столе по центру */
@@ -99,6 +100,20 @@ footer {
     height: 50px; /* Высота блока с картами */
 }
 
+/* Контейнер для игроков */
+.players-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Игроки */
 .player {
     position: absolute;
@@ -110,9 +125,62 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* Позиционирование игрока */
+}
+
+/* Специфические стили для позиций игроков */
+.player-1 {
+    bottom: 10%;
     left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-2 {
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-3 {
+    left: 10%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+}
+
+.player-4 {
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.player-5 {
+    top: 10%;
+    left: 20%;
+}
+
+.player-6 {
+    top: 10%;
+    left: 80%;
+}
+
+.player-7 {
+    bottom: 10%;
+    left: 20%;
+}
+
+.player-8 {
+    bottom: 10%;
+    left: 80%;
+}
+
+.player-9 {
+    bottom: 30%;
+    left: 30%;
+}
+
+.player-10 {
+    bottom: 30%;
+    left: 70%;
 }
 
 /* Карты крупье */
