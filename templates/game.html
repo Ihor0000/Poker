@@ -49,26 +49,33 @@
         <div id="poker-table" class="poker-table-container">
             <h2>Покерный стол ID: {{ game_id }}</h2>
             <div class="table">
-                <div class="table-info">
-                    <h3>Карты на столе</h3>
-                </div>
-                {% for player in players %}
-                    <div class="player" style="transform: rotate({{ loop.index * 360 / total_players }}deg) translate(200px) rotate(-{{ loop.index * 360 / total_players }}deg);">
-                        <p>{{ player.name }}</p>
-                        <div class="cards">
-                            <div class="card">?</div>
-                            <div class="card">?</div>
-                        </div>
-                    </div>
-                {% endfor %}
-                <!-- Карты крупье -->
                 <!-- Карты на столе -->
-                <h3>Карты на столе</h3>
                 <div class="community-cards">
                     {% for card in community_cards %}
                         <img src="{{ url_for('static', filename='images/Deck/' + card + '.png') }}" alt="{{ card }}" class="card-img">
                     {% endfor %}
                 </div>
+{% for player in players %}
+    {% if loop.index <= total_players / 2 %}
+        <!-- Верхняя и нижняя сторона стола -->
+        <div class="player" style="position: absolute; top: 10px; left: {{ 100 + (loop.index - 1) * (100 / (total_players / 2)) }}px;">
+            <p>{{ player.name }}</p>
+            <div class="cards">
+                <div class="card">?</div>
+                <div class="card">?</div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Левый и правый стороны стола -->
+        <div class="player" style="position: absolute; top: {{ 100 + (loop.index - total_players / 2 - 1) * (100 / (total_players / 2)) }}px; left: 10px;">
+            <p>{{ player.name }}</p>
+            <div class="cards">
+                <div class="card">?</div>
+                <div class="card">?</div>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
             </div>
             <!-- Карты игрока -->
             <div class="player-hand">
@@ -80,17 +87,16 @@
                 </div>
             </div>
             <!-- Поле для ставки и кнопки действий -->
-                <div class="action-buttons">
-                    <form action="/player-action" method="POST">
-                        <input type="number" name="bet_amount" id="bet-amount" placeholder="Ставка">
-                        <button type="submit" name="action" value="check" id="check-button">Чек</button>
-                        <button type="submit" name="action" value="bet" id="bet-button">Бет</button>
-                        <button type="submit" name="action" value="call" id="call-button">Кол</button>
-                        <button type="submit" name="action" value="fold" id="fold-button">Фолд</button>
-                    </form>
-                </div>
-        </div>
-        <!-- Логи игры -->
+            <div class="action-buttons">
+                <form action="/player-action" method="POST">
+                    <input type="number" name="bet_amount" id="bet-amount" placeholder="Ставка">
+                    <button type="submit" name="action" value="check" id="check-button">Чек</button>
+                    <button type="submit" name="action" value="bet" id="bet-button">Бет</button>
+                    <button type="submit" name="action" value="call" id="call-button">Кол</button>
+                    <button type="submit" name="action" value="fold" id="fold-button">Фолд</button>
+                </form>
+            </div>
+            <!-- Логи игры -->
             <div id="game-logs" class="game-logs">
                 <h3>Логи игры</h3>
                 <textarea id="logs" rows="10" readonly>
@@ -99,9 +105,9 @@
                     {% endfor %}
                 </textarea>
             </div>
-        {% endif %}
+            {% endif %}
+        </div>
     </main>
-
     <footer>
         <p>&copy; 2024 Покер онлайн</p>
     </footer>

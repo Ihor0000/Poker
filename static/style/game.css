@@ -76,36 +76,27 @@ footer {
     margin: 20px 0;
 }
 
-/* КАРТЫ */
-.card-img {
-    width: 50px;
-    height: auto;
-    margin: 5px;
-}
-
+/* Прямоугольный стол */
 .table {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 600px; /* Измените на желаемую ширину */
+    height: 400px; /* Измените на желаемую высоту */
     margin: 0 auto;
     border: 2px solid green;
-    border-radius: 50%;
+    border-radius: 10px; /* Скругление углов */
     background-color: #228B22;
 }
 
-.table-info {
+/* Карты на столе по центру */
+.community-cards {
     position: absolute;
-    top: 10%;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-}
-
-.table-info h3 {
-    padding-top:50px;
-    margin: 200;
-    color: #fff;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-around;
+    width: 300px; /* Ширина блока с картами */
+    height: 50px; /* Высота блока с картами */
 }
 
 /* Игроки */
@@ -119,20 +110,20 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    left: 36%;
-    top: 36%;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
 /* Карты крупье */
 .dealer-cards {
     position: absolute;
-    top: 60px;
+    top: 10px; /* Измените при необходимости */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: space-around;
-    width: 200px;
+    width: 300px; /* Ширина блока с картами крупье */
 }
 
 /* Стили для формы выбора количества ботов */
