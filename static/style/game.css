@@ -73,21 +73,25 @@ footer {
 
 /* Стол с игроками */
 .poker-table-container {
-    margin: 20px 0;
+    margin: 10px 0;
     text-align: center;
 }
-
+.poker-table-container h2{
+    padding: 20px;
+}
 /* Прямоугольный стол */
 .table {
     position: relative;
     width: 600px; /* Прямоугольный стол */
-    height: 400px;
+    height: 300px;
     margin: 0 auto;
-    border: 2px solid green;
+    border: 8px solid green;
     background-color: #228B22;
-    border-radius: 10px;
+    border-radius: 250px;
 }
-
+.table-info {
+    margin-top: 80px;
+}
 /* Карты на столе по центру */
 .community-cards {
     position: absolute;
@@ -96,8 +100,8 @@ footer {
     transform: translate(-50%, -50%);
     display: flex;
     justify-content: space-around;
-    width: 300px; /* Ширина блока с картами */
-    height: 50px; /* Высота блока с картами */
+    width: 320px; /* Ширина блока с картами */
+    height: 80px; /* Высота блока с картами */
 }
 
 /* Контейнер для игроков */
@@ -106,8 +110,8 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    width: 150%;/* Контейнер для игроков */
+    height: 150%;/* Контейнер для игроков */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -201,7 +205,7 @@ footer {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 

@@ -45,6 +45,7 @@
         {% endif %}
 
 <!-- Стол с игроками -->
+            {% if players %}
             <div id="poker-table" class="poker-table-container">
                 <h2>Покерный стол ID: {{ game_id }}</h2>
                 <div class="table">
@@ -63,8 +64,6 @@
                         {% endfor %}
                     </div>
                     <!-- Карты крупье -->
-                    <!-- Карты на столе -->
-                    <h3>Карты на столе</h3>
                     <div class="community-cards">
                         {% for card in community_cards %}
                             <img src="{{ url_for('static', filename='images/Deck/' + card + '.png') }}" alt="{{ card }}" class="card-img">
@@ -99,6 +98,7 @@
                     {% endfor %}
                 </textarea>
             </div>
+        {% endif %}
         </div>
     </main>
     <footer>
