@@ -54,7 +54,6 @@ def game():
                            pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'])
 
 
-
 @app.route('/start-game', methods=['POST'])
 def start_game():
     bot_count = int(request.form.get('bot_count'))

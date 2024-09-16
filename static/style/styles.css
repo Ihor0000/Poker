@@ -435,21 +435,19 @@ footer {
 
 .cards {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     margin-top: 10px;
 }
 
 .card {
-    width: 80px;
-    height: 120px;
+    width: 30px;
+    height: 50px;
     background-color: red; /* Обновлено */
     border: 1px solid black;
-    border-radius: 5px;
-    margin-right: 10px;
+    border-radius: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32px;
     color: black; /* Черный цвет текста */
 }
 
@@ -504,23 +502,7 @@ footer {
     transform: translate(-50%, -50%);
 }
 
-.cards {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-}
 
-.card {
-    width: 30px;
-    height: 50px;
-    background-color: red; /* Обновлено */
-    border: 1px solid black;
-    border-radius: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black; /* Черный цвет текста */
-}
 
 /* Карты крупье */
 .dealer-cards {

@@ -1,0 +1,127 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+/* Турниры */
+.tournaments {
+    margin: 0 0 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tournaments {
+    align-items: flex-start;
+}
+
+.registration-card {
+    width: 48%;
+    padding: 48px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    grid-gap: 60px;
+}
+
+.form-section {
+    padding-left: 20px;
+    grid-column: 1 / span 1;
+}
+
+.tournament-info {
+    grid-column: 2 / span 1;
+    margin: -20px 0 16px 44px;
+    line-height: 180%;
+}
+
+.registration-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-card label {
+    margin-bottom: 12px;
+}
+
+.registration-card input {
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.tournament-info h2 {
+    margin-top: 0;
+    margin-bottom: 28px;
+}
+
+.tournament-info p {
+    margin-bottom: 18px;
+}
+
+.shuffle-button {
+    margin: 12px;
+    padding: 12px 0;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+}
+
+.shuffle-button:hover {
+    border-radius: 18px;
+    background-color: #0056b3;
+}
+
+.deck {
+    width: 400px;
+}

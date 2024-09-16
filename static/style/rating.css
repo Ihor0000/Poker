@@ -1,0 +1,82 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+/* Рейтинг */
+.rating {
+    text-align: center;
+    padding: 20px;
+}
+
+.rating table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rating th, .rating td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.rating th {
+    background-color: #222;
+    color: #fff;
+}
+/* Текущие бонусы */
+.current-bonuses {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.current-bonuses h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.bonuses p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}

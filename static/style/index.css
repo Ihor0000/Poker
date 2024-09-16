@@ -1,0 +1,168 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+/* Главная страница */
+.welcome {
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* Таймер */
+.timer {
+    font-size: 28px;
+    color: #ff0000;
+    text-align: center;
+    margin-top: 20px;
+}
+/* Баннер */
+.hero {
+    background-image: url("static/images/poker_background.jpg");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero h2 {
+    color: #222;
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero p {
+    color: #222;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.hero .btn {
+    font-size: 24px;
+    padding: 15px 40px;
+    background-color: #ff5722;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #e64a19;
+}
+
+/* Новости */
+.news-banner {
+    background-color: #ffcc00;
+    padding: 20px;
+    text-align: center;
+}
+
+.news-banner h2 {
+    font-size: 36px;
+}
+
+.news-banner marquee {
+    font-size: 24px;
+    color: #000;
+}
+/* Ближайшие турниры */
+.upcoming-tournaments {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-tournaments h3 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upcoming-tournaments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.upcoming-tournaments li {
+    font-size: 18px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.upcoming-tournaments li:last-child {
+    border-bottom: none;
+}
+
+.upcoming-tournaments .btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #4caf50;
+}
+/* Галерея победителей */
+.winners-gallery {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.winners-gallery h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.gallery img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
