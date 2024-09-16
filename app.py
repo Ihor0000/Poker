@@ -44,13 +44,16 @@ def about():
 @app.route('/game.html')
 def game():
     players = game_data['players']
-    community_cards = game_data['community_cards']
+    community_cards = [str(card) for card in game_data['community_cards']]
+    player_hand = [str(card) for card in players[0].hand] if players else []
     pot = game_data['pot']
     current_bet = game_data['current_bet']
     total_players = len(players)
 
-    return render_template('game.html', players=players, community_cards=community_cards, pot=pot,
-                           current_bet=current_bet, total_players=total_players, logs=game_data['logs'])
+    return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
+                           pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'])
+
+
 
 @app.route('/start-game', methods=['POST'])
 def start_game():
@@ -170,7 +173,7 @@ def deal_community_cards():
     round_name = round_names[game_data['round_num']]
     if game_data['round_num'] == 1:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(3)]
-    elif game_data['round_num'] >= 0:
+    elif game_data['round_num'] <= 3:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(1)]
 
     game_data['logs'].append(f"*********** {round_name}***********")

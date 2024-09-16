@@ -62,18 +62,20 @@
                     </div>
                 {% endfor %}
                 <!-- Карты крупье -->
-                <div class="dealer-cards">
-                    {% for card in dealer_hand %}
-                        <div class="card">{{ card }}</div>
+                <!-- Карты на столе -->
+                <h3>Карты на столе</h3>
+                <div class="community-cards">
+                    {% for card in community_cards %}
+                        <img src="{{ url_for('static', filename='images/Deck/' + card + '.png') }}" alt="{{ card }}" class="card-img">
                     {% endfor %}
                 </div>
             </div>
             <!-- Карты игрока -->
             <div class="player-hand">
                 <h3>Ваша рука</h3>
-                <div class="cards">
+                <div class="player-cards">
                     {% for card in player_hand %}
-                        <div class="card">{{ card }}</div>
+                        <img src="{{ url_for('static', filename='images/Deck/' + card + '.png') }}" alt="{{ card }}" class="card-img">
                     {% endfor %}
                 </div>
             </div>

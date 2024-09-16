@@ -457,7 +457,12 @@ footer {
 .poker-table-container {
     margin: 20px 0;
 }
-
+/* КАРТЫ */
+.card-img {
+    width: 50px;
+    height: auto;
+    margin: 5px;
+}
 .table {
     position: relative;
     width: 400px;
