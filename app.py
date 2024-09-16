@@ -50,6 +50,7 @@ def game():
     current_bet = game_data['current_bet']
     total_players = len(players)
 
+
     return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
                            pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'])
 
