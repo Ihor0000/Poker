@@ -30,6 +30,8 @@ class Deck:
 
     def deal(self):
         return self.cards.pop()
+
+
 class HandEvaluator:
     @staticmethod
     def evaluate_hand(hand, community_cards):
@@ -116,6 +118,7 @@ class HandEvaluator:
     def has_pair(values):
         counter = Counter(values)
         return 2 in counter.values()
+
 
 class Player:
     def __init__(self, player_id):
@@ -210,7 +213,6 @@ class Bot(Player):
                         return 'к'
                 elif self.current_bet == current_bet:
                     return 'б'
-                    #return 'ч'
                 else:
                     bet_amount = int(average_bet * 1.5)
                     return 'б'
@@ -233,6 +235,7 @@ class Bot(Player):
             # Реализация для тестового бота
             pass
 
+
 def check_game_over(players):
     active_players = [player for player in players if player.hand]
     return len(active_players) == 1
@@ -248,6 +251,8 @@ def update_match_history(match_id, player_id, result, amount, total_bets, dateti
         "INSERT INTO matches_history (match_id, player_id, result, amount, total_bets, datetime) VALUES (%s, %s, %s, %s, %s, %s)",
         (match_id, str(player_id), result, amount, total_bets, datetime_str))
     conn.commit()
+
+
 def start_game():
     num_players = int(input("Введите количество игроков: "))
     player_ids = []
@@ -311,7 +316,6 @@ def start_game():
                     player.hand = []
                     print(f"\nБот {player.name} сбросил карты и вышел из игры.")
                 elif botAction == 'к':
-
                     player.money -= current_bet
                     pot += current_bet
                     player.current_bet = current_bet
@@ -324,7 +328,7 @@ def start_game():
                     player.current_bet = bet_amount
                     current_bet = bet_amount
                     player.total_bets += player.current_bet
-                    print(f"\nБот{player.name} сделал ставку в размере {bet_amount}$.")
+                    print(f"\nБот {player.name} сделал ставку в размере {bet_amount}$.")
 
                 elif botAction == 'р':
                     if player.money > current_bet - player.current_bet:
@@ -333,10 +337,9 @@ def start_game():
                         player.current_bet = bet_amount
                         current_bet = bet_amount
                         player.total_bets += player.current_bet
-                        print(f"\nБот{player.name} повысил ставку до {bet_amount}$.")
-
-                elif botAction == 'ч':
-                        print(f"\nБот{player.name} пропускает ставку.")
+                        print(f"\nБот {player.name} повысил ставку до {bet_amount}$.")
+                    else:
+                        print("Недостаточно денег для повышения ставки.")
 
                 if check_game_over(players):
                     break
@@ -344,8 +347,8 @@ def start_game():
             else:
                 while True:
                     playerAction = input(
-                        "\nВыберите действие: 'ф' - фолд, 'к' - колл, 'б' - бет, 'р' - рейз, 'ч' - чек: ")
-                    if playerAction in ['ф', 'к', 'б', 'р', 'ч']:
+                        "\nВыберите действие: 'ф' - фолд, 'к' - колл, 'б' - бет, 'р' - рейз: ")
+                    if playerAction in ['ф', 'к', 'б', 'р']:
                         break
                     else:
                         print("Некорректный ввод. Попробуйте снова.")
@@ -398,13 +401,7 @@ def start_game():
                             print("Некорректный ввод. Введите число.")
                     else:
                         print("Недостаточно денег для повышения ставки.")
-                elif playerAction == 'ч':
-                    if player.current_bet == current_bet:
-                        print(f"\n{player.name} пропускает ставку.")
-                    else:
-                        print("Нельзя чекнуть, если есть активная ставка.")
-                else:
-                    print("Некорректный ввод. Попробуйте снова.")
+
                 if check_game_over(players):
                     break
 
