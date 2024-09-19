@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history
 import random
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -17,14 +18,17 @@ game_data = {
 
 # Названия этапов игры
 round_names = ['Префлоп', 'Флоп', 'Тёрн', 'Ривер', 'Спасибо за игру']
+developer_mode = True  # Включение режима разработчика
 
 @app.route('/')
 @app.route('/index.html')
 def baseindex():
     return render_template('index.html')
+
 @app.route('/profile.html')
 def profile():
     return render_template('profile.html')
+
 @app.route('/tournaments.html')
 def tournaments():
     return render_template('tournaments.html')
@@ -40,11 +44,6 @@ def rules():
 @app.route('/about.html')
 def about():
     return render_template('about.html')
-
-
-# Добавляем флаг режима разработчика
-developer_mode = True
-
 
 @app.route('/game.html')
 def game():
@@ -66,11 +65,9 @@ def game():
             }
             all_players_info.append(player_info)
 
-    return render_template('game.html', players=players, community_cards=community_cards,
-                           player_hand=player_hand, pot=pot, current_bet=current_bet,
-                           total_players=total_players, logs=game_data['logs'],
+    return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
+                           pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'],
                            all_players_info=all_players_info if developer_mode else None)
-
 
 @app.route('/start-game', methods=['POST'])
 def start_game():
@@ -126,7 +123,6 @@ def start_game():
 
     return redirect(url_for('game'))
 
-
 @app.route('/player-action', methods=['POST'])
 def player_action():
     action = request.form.get('action')
@@ -135,7 +131,7 @@ def player_action():
 
     if action == 'fold':
         player.hand = []
-        game_data['logs'].append(f"{player.name} сделал фолд.")
+        game_data['logs'].append(f"{player.name} сделал фолд и выбыл из игры.")
     elif action == 'check':
         game_data['logs'].append(f"{player.name} сделал чек.")
     elif action == 'bet':
@@ -153,8 +149,19 @@ def player_action():
         player.current_bet = current_bet
         game_data['logs'].append(f"{player.name} уравнял ставку на {call_amount}$.")
 
-    return redirect(url_for('game'))
+    # Ходы ботов
+    bot_turns()
 
+    # Переход на следующий раунд, раздача карт
+    if game_data['round_num'] < 4:
+        game_data['round_num'] += 1
+        deal_community_cards()
+
+    # Если игра завершена (раунд ривера завершён), определяем победителя
+    if game_data['round_num'] == 4:
+        determine_winner()
+
+    return redirect(url_for('game'))
 
 def bot_turns():
     community_cards = game_data['community_cards']
@@ -172,19 +179,24 @@ def bot_turns():
             elif bot_action == 'к':
                 call_amount = current_bet - player.current_bet
                 player.money -= call_amount
+                update_player_money(player.player_id, -call_amount)
                 game_data['pot'] += call_amount
                 player.current_bet = current_bet
                 game_data['logs'].append(f"Бот {player.name} уравнял ставку на {call_amount}$.")
             elif bot_action == 'б':
                 bet_amount = min(random.randint(current_bet, player.money), player.money)
                 player.money -= bet_amount
+                update_player_money(player.player_id, -bet_amount)
                 game_data['pot'] += bet_amount
-                game_data['logs'].append(f"Бот {player.name} поставил {bet_amount}.")
+                player.current_bet = bet_amount
+                game_data['logs'].append(f"Бот {player.name} поставил {bet_amount}$.")
             elif bot_action == 'р':
                 raise_amount = current_bet + random.randint(10, min(100, player.money - current_bet))
                 player.money -= raise_amount
+                update_player_money(player.player_id, -raise_amount)
                 game_data['pot'] += raise_amount
-                game_data['logs'].append(f"Бот {player.name} повысил ставку до {raise_amount}.")
+                player.current_bet = raise_amount
+                game_data['logs'].append(f"Бот {player.name} повысил ставку до {raise_amount}$.")
 
 def deal_community_cards():
     round_name = round_names[game_data['round_num']]
@@ -193,30 +205,32 @@ def deal_community_cards():
     elif game_data['round_num'] <= 3:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(1)]
 
-    game_data['logs'].append(f"*********** {round_name}***********")
+    game_data['logs'].append(f"*********** {round_name} ***********")
     game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
     game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
 
-
 def determine_winner():
+    community_cards = game_data['community_cards']
     best_player = None
     best_hand_rank = -1
     best_hand_name = ""
+    best_hand_cards = []
+
+    game_data['logs'].append("***********Окончание игры***********")
+    game_data['logs'].append("Все карты игроков: ")
 
     for player in game_data['players']:
-        if player.hand:
-            hand_rank, hand_name, _ = HandEvaluator.evaluate_player_hand(player.hand + game_data['community_cards'])
+        if player.hand:  # Если игрок не выбыл
+            hand_rank, hand_name, best_cards = HandEvaluator.evaluate_player_hand(player.hand + community_cards)
             if hand_rank > best_hand_rank:
                 best_hand_rank = hand_rank
                 best_hand_name = hand_name
+                best_hand_cards = best_cards
                 best_player = player
+            # Показать все карты игрока и его лучшую комбинацию
+            game_data['logs'].append(f"*{player.name}: * карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}.")
 
     game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'.")
-
-    # Обновляем историю матчей
-    for player in game_data['players']:
-        result = "Победа" if player == best_player else "Поражение"
-        update_match_history(game_id, player.player_id, result, player.money, player.total_bets, datetime.now())
 
 if __name__ == '__main__':
     app.run(debug=True)
