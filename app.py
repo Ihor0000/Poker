@@ -227,10 +227,11 @@ def determine_winner():
                 best_hand_name = hand_name
                 best_hand_cards = best_cards
                 best_player = player
-            # Показать все карты игрока и его лучшую комбинацию
-            game_data['logs'].append(f"*{player.name}: * карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}.")
+            # Показать все карты игрока и его лучшую комбинацию с деталями
+            game_data['logs'].append(f"*{player.name}: * карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}. Из карт: {', '.join(map(str, best_cards))}")
 
-    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'.")
+    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}' из карт: {', '.join(map(str, best_hand_cards))}.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
