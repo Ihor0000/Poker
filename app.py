@@ -41,6 +41,11 @@ def rules():
 def about():
     return render_template('about.html')
 
+
+# Добавляем флаг режима разработчика
+developer_mode = True
+
+
 @app.route('/game.html')
 def game():
     players = game_data['players']
@@ -50,10 +55,21 @@ def game():
     current_bet = game_data['current_bet']
     total_players = len(players)
 
+    # Передаем карты всех игроков и их баланс в шаблон, если включен режим разработчика
+    all_players_info = []
+    if developer_mode:
+        for player in players:
+            player_info = {
+                'name': player.name,
+                'hand': [str(card) for card in player.hand],
+                'balance': player.money
+            }
+            all_players_info.append(player_info)
 
-    return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
-                           pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'])
-
+    return render_template('game.html', players=players, community_cards=community_cards,
+                           player_hand=player_hand, pot=pot, current_bet=current_bet,
+                           total_players=total_players, logs=game_data['logs'],
+                           all_players_info=all_players_info if developer_mode else None)
 
 @app.route('/start-game', methods=['POST'])
 def start_game():

@@ -79,6 +79,7 @@
                         {% endfor %}
                     </div>
                 </div>
+
     <!-- Поле для ставки и кнопки действий -->
             <div class="action-buttons">
                 <form action="/player-action" method="POST">
@@ -89,6 +90,24 @@
                     <button type="submit" name="action" value="fold" id="fold-button">Фолд</button>
                 </form>
             </div>
+    <!-- Режим разработчика: отображение карт и балансов всех участников -->
+            {% if all_players_info %}
+            <div class="developer-mode">
+                <h3>Режим разработчика: Карты и баланс всех участников</h3>
+                <div class="all-players-info">
+                    {% for player_info in all_players_info %}
+                        <div class="player-info">
+                            <p>{{ player_info.name }}: Баланс - {{ player_info.balance }}$</p>
+                            <div class="cards">
+                                {% for card in player_info.hand %}
+                                    <img src="{{ url_for('static', filename='images/Deck/' + card + '.png') }}" alt="{{ card }}" class="card-img">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             <!-- Логи игры -->
             <div id="game-logs" class="game-logs">
                 <h3>Логи игры</h3>
