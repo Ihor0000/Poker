@@ -80,7 +80,8 @@
                     </div>
                 </div>
 
-    <!-- Поле для ставки и кнопки действий -->
+            <!-- Поле для действий игрока -->
+            {% if not game_over %}
             <div class="action-buttons">
                 <form action="/player-action" method="POST">
                     <input type="number" name="bet_amount" id="bet-amount" placeholder="Ставка">
@@ -90,6 +91,17 @@
                     <button type="submit" name="action" value="fold" id="fold-button">Фолд</button>
                 </form>
             </div>
+            {% endif %}
+
+            <!-- Кнопка "Сыграть еще" после завершения игры -->
+            {% if game_over %}
+            <div class="play-again">
+                <form action="/play-again" method="POST">
+                    <button type="submit" class="play-again-button">Сыграть еще</button>
+                </form>
+            </div>
+            {% endif %}
+
     <!-- Режим разработчика: отображение карт и балансов всех участников -->
             {% if all_players_info %}
             <div class="developer-mode">

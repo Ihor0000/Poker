@@ -13,7 +13,8 @@ game_data = {
     'pot': 0,
     'current_bet': 0,
     'round_num': 0,
-    'logs': []
+    'logs': [],
+    'game_over': False  # Флаг, указывающий на окончание игры
 }
 
 # Названия этапов игры
@@ -65,9 +66,12 @@ def game():
             }
             all_players_info.append(player_info)
 
+    # Проверяем, окончена ли игра
+    game_over = game_data['game_over']
+
     return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
                            pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'],
-                           all_players_info=all_players_info if developer_mode else None)
+                           all_players_info=all_players_info if developer_mode else None, game_over=game_over)
 
 @app.route('/start-game', methods=['POST'])
 def start_game():
@@ -91,6 +95,7 @@ def start_game():
     game_data['current_bet'] = 0
     game_data['round_num'] = 0
     game_data['logs'] = ["***********Игра началась***********"]
+    game_data['game_over'] = False  # Сброс флага окончания игры
 
     # Взнос каждого игрока в банк и обновление базы данных
     for player in game_data['players']:
@@ -125,6 +130,9 @@ def start_game():
 
 @app.route('/player-action', methods=['POST'])
 def player_action():
+    if game_data['game_over']:
+        return redirect(url_for('game'))
+
     action = request.form.get('action')
     player = game_data['players'][0]  # Реальный игрок
     current_bet = game_data['current_bet']
@@ -160,10 +168,14 @@ def player_action():
     # Если игра завершена (раунд ривера завершён), определяем победителя
     if game_data['round_num'] == 4:
         determine_winner()
+        game_data['game_over'] = True  # Устанавливаем флаг окончания игры
 
     return redirect(url_for('game'))
 
 def bot_turns():
+    if game_data['game_over']:
+        return
+
     community_cards = game_data['community_cards']
     current_bet = game_data['current_bet']
     pot = game_data['pot']
@@ -199,6 +211,9 @@ def bot_turns():
                 game_data['logs'].append(f"Бот {player.name} повысил ставку до {raise_amount}$.")
 
 def deal_community_cards():
+    if game_data['game_over']:
+        return
+
     round_name = round_names[game_data['round_num']]
     if game_data['round_num'] == 1:
         game_data['community_cards'] += [game_data['deck'].deal() for _ in range(3)]
@@ -210,6 +225,9 @@ def deal_community_cards():
     game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
 
 def determine_winner():
+    if game_data['game_over']:
+        return
+
     community_cards = game_data['community_cards']
     best_player = None
     best_hand_rank = -1
@@ -230,8 +248,23 @@ def determine_winner():
             # Показать все карты игрока и его лучшую комбинацию с деталями
             game_data['logs'].append(f"*{player.name}: * карты: {', '.join(map(str, player.hand))} - лучшая комбинация: {hand_name}. Из карт: {', '.join(map(str, best_cards))}")
 
-    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}' из карт: {', '.join(map(str, best_hand_cards))}.")
+    game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'. Из карт: {', '.join(map(str, best_hand_cards))}.")
+    game_data['game_over'] = True  # Устанавливаем флаг окончания игры
 
+@app.route('/play-again', methods=['POST'])
+def play_again():
+    # Сбрасываем данные текущей игры
+    game_data['players'] = []
+    game_data['deck'] = None
+    game_data['community_cards'] = []
+    game_data['pot'] = 0
+    game_data['current_bet'] = 0
+    game_data['round_num'] = 0
+    game_data['logs'] = []
+    game_data['game_over'] = False
+
+    # Перенаправляем на выбор количества ботов
+    return redirect(url_for('game'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -301,6 +301,35 @@ footer {
 .action-buttons button:hover {
     background-color: #0056b3;
 }
+/* Стиль для кнопки "Сыграть еще" */
+.play-again {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.play-again-button {
+    padding: 15px 30px;
+    background-color: #28a745; /* Зеленый цвет */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-again-button:hover {
+    background-color: #218838; /* Темно-зеленый цвет при наведении */
+}
+
+.play-again-button:active {
+    background-color: #1e7e34; /* Более темный зеленый при нажатии */
+}
+
+.play-again-button:focus {
+    outline: none;
+}
 
 /* Логи и действия игры */
 .game-logs {
