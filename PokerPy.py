@@ -129,7 +129,7 @@ class Player:
         self.best_hand = None
         self.best_hand_cards = []
 
-        cursor.execute("SELECT name, status, money FROM players WHERE id = %s", (player_id,))
+        cursor.execute("SELECT name, status, money FROM players WHERE player_id = %s", (player_id,))
         player_data = cursor.fetchone()
 
         if player_data:
@@ -242,7 +242,7 @@ def check_game_over(players):
 
 
 def update_player_money(player_id, money_change):
-    cursor.execute("UPDATE players SET money = money + %s WHERE id = %s", (money_change, player_id))
+    cursor.execute("UPDATE players SET money = money + %s WHERE player_id = %s", (money_change, player_id))
     conn.commit()
 
 
