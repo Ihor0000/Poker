@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, flash,session
-from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn
+from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn, execute_query, fetch_one
 import random
 from werkzeug.security import generate_password_hash,check_password_hash
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature, serializer
 
 app = Flask(__name__)
 app.secret_key = '#secret#@1412'  # Замените на что-то уникальное и безопасное
-s = URLSafeTimedSerializer(app.secret_key)
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 # Глобальные переменные для игры
 game_data = {
@@ -48,6 +48,8 @@ def rules():
 @app.route('/about.html')
 def about():
     return render_template('about.html')
+
+
 @app.route('/register.html', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -56,68 +58,52 @@ def register():
         password = request.form['password']
         password_hash = generate_password_hash(password)
 
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        query = "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)"
+        params = (username, email, password_hash)
+        execute_query(query, params)
 
-        if user:
-            flash('Пользователь с таким email уже существует', 'error')
-        else:
-            cursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
-                           (username, email, password_hash))
-            conn.commit()
-            flash('Регистрация прошла успешно', 'success')
-            return redirect(url_for('login'))
-
+        flash('Регистрация прошла успешно', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html')
+
+
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = Player.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.password, password):
-            # Генерация токена
-            token = s.dumps(user.email, salt='email-confirm')
+        query = "SELECT player_id, username, password_hash FROM users WHERE email = %s"
+        user = fetch_one(query, (email,))
 
-            # Сохранение токена в сессии
-            session['token'] = token
+        if user and check_password_hash(user[2], password):  # user[2] — это password_hash
+            session['user_id'] = user[0]  # user[0] — это id
+            session['username'] = user[1]  # user[1] — это username
 
-            flash(f'Добро пожаловать, {user.email}!', 'success')
-            return redirect(url_for('dashboard', token=token))  # Переход на дашборд с токеном
+            # Генерация токена с использованием itsdangerous
+            token = serializer.dumps(email, salt='email-confirm')
+            return redirect(url_for('dashboard', token=token))
         else:
-            flash('Неверные данные для входа', 'danger')
-            return redirect(url_for('login'))
+            flash('Неверный email или пароль', 'error')
+
     return render_template('login.html')
 
 
 @app.route('/dashboard/<token>')
 def dashboard(token):
     try:
-        # Верификация токена
-        email = s.loads(token, salt='email-confirm', max_age=3600)
-
-        # Проверка, что пользователь авторизован и токен действителен
-        user = Player.query.filter_by(email=email).first()
+        # Проверка токена с использованием itsdangerous
+        email = serializer.loads(token, salt='email-confirm', max_age=3600)
+        query = "SELECT username FROM users WHERE email = %s"
+        user = fetch_one(query, (email,))
         if user:
-            return render_template('dashboard.html', user=user)
-        else:
-            flash('Не удалось найти пользователя с таким токеном.', 'danger')
-            return redirect(url_for('login'))
-
-    except SignatureExpired:
-        flash('Срок действия токена истек. Пожалуйста, войдите снова.', 'danger')
-        return redirect(url_for('login'))
-    except BadSignature:
-        flash('Неверный токен.', 'danger')
+            return render_template('dashboard.html')
+            #return f"Добро пожаловать на ваш дашборд, {user[0]}!"  # user[0] — это username
+    except:
+        flash('Неверный или истекший токен', 'error')
         return redirect(url_for('login'))
 
-@app.route('/logout.html')
-def logout():
-    session.pop('player_id', None)
-    session.pop('username', None)
-    flash('Вы вышли из системы', 'success')
-    return redirect(url_for('login'))
+    return render_template('dashboard.html')
 
 @app.route('/game.html')
 def game():

@@ -7,6 +7,20 @@ conn = pymysql.connect(host='localhost', user='admin', password='admin', databas
 cursor = conn.cursor()
 
 
+# Функция для выполнения SQL запросов
+def execute_query(query, params=None):
+    cursor.execute(query, params)
+    conn.commit()
+
+# Функция для извлечения одного результата
+def fetch_one(query, params=None):
+    cursor.execute(query, params)
+    return cursor.fetchone()
+
+# Функция для извлечения всех результатов
+def fetch_all(query, params=None):
+    cursor.execute(query, params)
+    return cursor.fetchall()
 class Card:
     def __init__(self, suit, value):
         self.suit = suit
