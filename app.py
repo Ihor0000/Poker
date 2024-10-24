@@ -2,9 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash,sess
 from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn
 import random
 from werkzeug.security import generate_password_hash,check_password_hash
+from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
 app.secret_key = '#secret#@1412'  # Замените на что-то уникальное и безопасное
+s = URLSafeTimedSerializer(app.secret_key)
+
 # Глобальные переменные для игры
 game_data = {
     'players': [],
