@@ -29,26 +29,52 @@ developer_mode = True  # Включение режима разработчик�
 def baseindex():
     return render_template('index.html')
 
-@app.route('/profile.html')
-def profile():
-    return render_template('profile.html')
-
-@app.route('/tournaments.html')
-def tournaments():
+@app.route('/tournaments/<token>')
+def tournaments(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('tournaments.html', username=user[0], token=token)
     return render_template('tournaments.html')
 
-@app.route('/rating.html')
-def rating():
+@app.route('/rating/<token>')
+def rating(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('rating.html', username=user[0], token=token)
     return render_template('rating.html')
 
-@app.route('/rules.html')
-def rules():
+@app.route('/rules/<token>')
+def rules(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('rules.html', username=user[0], token=token)
     return render_template('rules.html')
 
-@app.route('/about.html')
-def about():
+@app.route('/profile/<token>')
+def profile(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('profile.html', username=user[0], token=token)
+    return redirect(url_for('login'))
+
+@app.route('/about/<token>')
+def about(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('about.html', username=user[0], token=token)
     return render_template('about.html')
 
+def get_user_from_token(token):
+    #"""Проверяет токен и возвращает информацию о пользователе."""
+    try:
+        email = serializer.loads(token, salt='email-confirm', max_age=3600)
+        query = "SELECT username FROM users WHERE email = %s"
+        user = fetch_one(query, (email,))
+        if user:
+            return user
+    except:
+        flash('Неверный или истекший токен', 'error')
+        return None
 
 @app.route('/register.html', methods=['GET', 'POST'])
 def register():
@@ -89,21 +115,17 @@ def login():
     return render_template('login.html')
 
 
+# Маршрут дашборда
 @app.route('/dashboard/<token>')
 def dashboard(token):
-    try:
-        # Проверка токена с использованием itsdangerous
-        email = serializer.loads(token, salt='email-confirm', max_age=3600)
-        query = "SELECT username FROM users WHERE email = %s"
-        user = fetch_one(query, (email,))
-        if user:
-            return render_template('dashboard.html')
-            #return f"Добро пожаловать на ваш дашборд, {user[0]}!"  # user[0] — это username
-    except:
-        flash('Неверный или истекший токен', 'error')
-        return redirect(url_for('login'))
+    user = get_user_from_token(token)
+    if user:
+        return render_template('dashboard.html', username=user[0], token=token)
+    return redirect(url_for('login'))
 
-    return render_template('dashboard.html')
+# Маршрут игровой сессии
+# Маршрут профиля
+
 
 @app.route('/game.html')
 def game():
