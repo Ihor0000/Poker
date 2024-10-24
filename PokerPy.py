@@ -137,10 +137,9 @@ class Player:
             self.status = player_data[1]
             self.money = player_data[2]
         else:
-            # Если игрок не найден в базе данных, установим дефолтные значения
             self.name = f"Player_{player_id}"
             self.status = 1
-            self.money = 1000  # Начальная сумма денег
+            self.money = 1000
 
     def draw_card(self, card):
         self.hand.append(card)

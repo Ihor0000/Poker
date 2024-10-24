@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
-from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history
+from flask import Flask, render_template, request, redirect, url_for, flash,session
+from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn
 import random
-from datetime import datetime
+from werkzeug.security import generate_password_hash,check_password_hash
 
 app = Flask(__name__)
-
+app.secret_key = '#secret#@1412'  # Замените на что-то уникальное и безопасное
 # Глобальные переменные для игры
 game_data = {
     'players': [],
@@ -45,6 +45,65 @@ def rules():
 @app.route('/about.html')
 def about():
     return render_template('about.html')
+@app.route('/register.html', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        password_hash = generate_password_hash(password)
+
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+
+        if user:
+            flash('Пользователь с таким email уже существует', 'error')
+        else:
+            cursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+                           (username, email, password_hash))
+            conn.commit()
+            flash('Регистрация прошла успешно', 'success')
+            return redirect(url_for('login'))
+
+    return render_template('register.html')
+@app.route('/login.html', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if 'email' not in request.form or 'password' not in request.form:
+            flash('Пожалуйста, заполните все поля', 'danger')
+            return redirect('/login.html')
+
+        email = request.form['email']
+        password = request.form['password']
+
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+
+        if user and check_password_hash(user[3], password):  # user[3] это password_hash
+            session['user_id'] = user[0]
+            session['username'] = user[1]
+            flash('Вы успешно вошли в систему', 'success')
+            return redirect('/index.html') #Перенаправляем на index.html
+        else:
+            flash('Неправильный email или пароль', 'error')
+
+    return render_template('login.html')
+
+
+@app.route('/dashboard.html')
+def dashboard():
+    if 'player_id' not in session:
+        flash('Пожалуйста, авторизуйтесь для доступа к этой странице', 'error')
+        return redirect(url_for('login'))
+
+    return f"Добро пожаловать, {session['username']}!"
+
+@app.route('/logout.html')
+def logout():
+    session.pop('player_id', None)
+    session.pop('username', None)
+    flash('Вы вышли из системы', 'success')
+    return redirect(url_for('login'))
 
 @app.route('/game.html')
 def game():

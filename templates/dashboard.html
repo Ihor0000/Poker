@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правила - Покер онлайн</title>
-    <link rel="shortcut icon" href="static/images/site.png" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/rules.css') }}">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/dashboard.css') }}">
 </head>
 <body>
     <header>
-        <h1>Правила</h1>
+        <h1>Личный кабинет</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Главная</a></li>
@@ -25,15 +24,15 @@
             </ul>
         </nav>
     </header>
+
     <main>
-        <section class="rules">
-            <h2>Правила игры в покер</h2>
-            <p>Здесь будут представлены правила игры в покер. Пожалуйста, ознакомьтесь с ними перед началом игры.</p>
-            <!-- Вставьте текст правил покера сюда -->
-        </section>
+        <h2>Добро пожаловать, {{ username }}!</h2>
+        <p>Ваш баланс: {{ balance }} монет.</p>
+        <a href="game.html">Начать игру</a>
     </main>
+
     <footer>
-        <p>&copy; 2024 Покер онлайн</p>
+        <p>&copy; 2024 Poker Game</p>
     </footer>
 </body>
 </html>

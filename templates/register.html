@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/register.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Регистрация</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="profile.html">Мой профиль</a></li>
+                <li><a href="game.html">Играть</a></li>
+                <li><a href="tournaments.html">Турниры</a></li>
+                <li><a href="rating.html">Рейтинг</a></li>
+                <li><a href="rules.html">Правила</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="login.html">login</a></li>
+                <li><a href="register.html">register</a></li>
+                <li><a href="dashboard.html">dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Создать новый аккаунт</h2>
+        <form action="{{ url_for('register') }}" method="post">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password">Подтвердите пароль:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Poker Game</p>
+    </footer>
+</body>
+</html>
