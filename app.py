@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash,sess
 from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn
 import random
 from werkzeug.security import generate_password_hash,check_password_hash
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 
 app = Flask(__name__)
 app.secret_key = '#secret#@1412'  # Замените на что-то уникальное и безопасное
@@ -72,34 +72,45 @@ def register():
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if 'email' not in request.form or 'password' not in request.form:
-            flash('Пожалуйста, заполните все поля', 'danger')
-            return redirect('/login.html')
-
         email = request.form['email']
         password = request.form['password']
+        user = Player.query.filter_by(email=email).first()
 
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        if user and check_password_hash(user.password, password):
+            # Генерация токена
+            token = s.dumps(user.email, salt='email-confirm')
 
-        if user and check_password_hash(user[3], password):  # user[3] это password_hash
-            session['user_id'] = user[0]
-            session['username'] = user[1]
-            flash('Вы успешно вошли в систему', 'success')
-            return redirect('/index.html') #Перенаправляем на index.html
+            # Сохранение токена в сессии
+            session['token'] = token
+
+            flash(f'Добро пожаловать, {user.email}!', 'success')
+            return redirect(url_for('dashboard', token=token))  # Переход на дашборд с токеном
         else:
-            flash('Неправильный email или пароль', 'error')
-
+            flash('Неверные данные для входа', 'danger')
+            return redirect(url_for('login'))
     return render_template('login.html')
 
 
-@app.route('/dashboard.html')
-def dashboard():
-    if 'player_id' not in session:
-        flash('Пожалуйста, авторизуйтесь для доступа к этой странице', 'error')
-        return redirect(url_for('login'))
+@app.route('/dashboard/<token>')
+def dashboard(token):
+    try:
+        # Верификация токена
+        email = s.loads(token, salt='email-confirm', max_age=3600)
 
-    return f"Добро пожаловать, {session['username']}!"
+        # Проверка, что пользователь авторизован и токен действителен
+        user = Player.query.filter_by(email=email).first()
+        if user:
+            return render_template('dashboard.html', user=user)
+        else:
+            flash('Не удалось найти пользователя с таким токеном.', 'danger')
+            return redirect(url_for('login'))
+
+    except SignatureExpired:
+        flash('Срок действия токена истек. Пожалуйста, войдите снова.', 'danger')
+        return redirect(url_for('login'))
+    except BadSignature:
+        flash('Неверный токен.', 'danger')
+        return redirect(url_for('login'))
 
 @app.route('/logout.html')
 def logout():
