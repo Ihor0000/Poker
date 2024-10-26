@@ -302,12 +302,12 @@ footer {
     background-color: #0056b3;
 }
 /* Стиль для кнопки "Сыграть еще" */
-.restart {
+.play-again {
     text-align: center;
     margin-top: 20px;
 }
 
-.restart-button {
+.play-again-button {
     padding: 15px 30px;
     background-color: #28a745; /* Зеленый цвет */
     color: white;
@@ -319,15 +319,15 @@ footer {
     transition: background-color 0.3s ease;
 }
 
-.restart-button:hover {
+.play-again-button:hover {
     background-color: #218838; /* Темно-зеленый цвет при наведении */
 }
 
-.restart-button:active {
+.play-again-button:active {
     background-color: #1e7e34; /* Более темный зеленый при нажатии */
 }
 
-.restart-button:focus {
+.play-again-button:focus {
     outline: none;
 }
 

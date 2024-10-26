@@ -100,9 +100,9 @@
 
             <!-- Кнопка "Сыграть еще" после завершения игры -->
             {% if game_over %}
-            <div class="restart">
+            <div class="play-again">
                 <form action="{{ url_for('play_again', token=token) }}" method="POST">
-                    <button type="submit">Сыграть еще</button>
+                    <button type="submit" class="play-again-button">Сыграть еще</button>
                 </form>
             </div>
             {% endif %}
