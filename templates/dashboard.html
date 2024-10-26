@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="index.html">Главная</a></li>
                 <li><a href="{{ url_for('profile', token=token) }}">Профиль</a></li>
-                <li><a href="game.html">Играть</a></li>
+                <li><a href="{{ url_for('game', token=token) }}">Играть</a></li>
                 <li><a href="{{ url_for('tournaments', token=token) }}">Турниры</a></li>
                 <li><a href="{{ url_for('rating', token=token) }}">Рейтинг</a></li>
                 <li><a href="{{ url_for('rules', token=token) }}">Правила</a></li>
@@ -29,7 +29,7 @@
     <main>
         <h2>Добро пожаловат1211312ь, {{ username }}!</h2>
         <p>Ваш баланс: {{ balance }} монет.</p>
-        <a href="game.html">Начать игру</a>
+        <a href="{{ url_for('game', token=token) }}">Начать игру</a>
     </main>
 
     <footer>

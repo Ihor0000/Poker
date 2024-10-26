@@ -127,8 +127,8 @@ def dashboard(token):
 # Маршрут профиля
 
 
-@app.route('/game.html')
-def game():
+@app.route('/game/<token>')
+def game(token):
     players = game_data['players']
     community_cards = [str(card) for card in game_data['community_cards']]
     player_hand = [str(card) for card in players[0].hand] if players else []
@@ -150,12 +150,14 @@ def game():
     # Проверяем, окончена ли игра
     game_over = game_data['game_over']
 
-    return render_template('game.html', players=players, community_cards=community_cards, player_hand=player_hand,
+    user = get_user_from_token(token)
+    if user:
+        return render_template('game.html', username=user[0], token=token, players=players, community_cards=community_cards, player_hand=player_hand,
                            pot=pot, current_bet=current_bet, total_players=total_players, logs=game_data['logs'],
                            all_players_info=all_players_info if developer_mode else None, game_over=game_over)
-
-@app.route('/start-game', methods=['POST'])
-def start_game():
+    return redirect(url_for('login'))
+@app.route('/start-game/<token>', methods=['POST'])
+def start_game(token):
     bot_count = int(request.form.get('bot_count'))
     player_ids = []  # Список ID игроков, которых будем получать из базы данных
 
@@ -207,7 +209,10 @@ def start_game():
         player.hand = [game_data['deck'].deal(), game_data['deck'].deal()]
         game_data['logs'].append(f"{player.name} получил карты.")
 
-    return redirect(url_for('game'))
+    user = get_user_from_token(token)
+    if user:
+        return redirect(url_for('game', token=token))
+    return redirect(url_for('login'))
 
 @app.route('/player-action', methods=['POST'])
 def player_action():
