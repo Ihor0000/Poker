@@ -337,8 +337,8 @@ def determine_winner():
     game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'. Из карт: {', '.join(map(str, best_hand_cards))}.")
     game_data['game_over'] = True  # Устанавливаем флаг окончания игры
 
-@app.route('/play-again', methods=['POST'])
-def play_again():
+@app.route('/play-again/<token>', methods=['POST'])
+def play_again(token):
     # Сбрасываем данные текущей игры
     game_data['players'] = []
     game_data['deck'] = None
@@ -350,7 +350,7 @@ def play_again():
     game_data['game_over'] = False
 
     # Перенаправляем на выбор количества ботов
-    return redirect(url_for('game'))
+    return redirect(url_for('game', token=token))
 
 if __name__ == '__main__':
     app.run(debug=True)
