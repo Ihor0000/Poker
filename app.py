@@ -164,7 +164,6 @@ def start_game():
 
     players = [Player(player_id) for player_id in player_ids]
 
-
     # Создание ботов
     for i in range(bot_count):
         players.append(Bot(f'0{i + 1}', random.randint(1, 3)))
