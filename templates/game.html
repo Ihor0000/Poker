@@ -87,7 +87,8 @@
             <!-- Поле для действий игрока -->
             {% if not game_over %}
             <div class="action-buttons">
-                <form action="/player-action" method="POST">
+                <form action="{{ url_for('player_action', token=token) }}" method="POST">
+                    <input type="hidden" name="token" value="{{ token }}">
                     <input type="number" name="bet_amount" id="bet-amount" placeholder="Ставка">
                     <button type="submit" name="action" value="check" id="check-button">Чек</button>
                     <button type="submit" name="action" value="bet" id="bet-button">Бет</button>

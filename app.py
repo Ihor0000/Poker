@@ -214,8 +214,8 @@ def start_game(token):
         return redirect(url_for('game', token=token))
     return redirect(url_for('login'))
 
-@app.route('/player-action', methods=['POST'])
-def player_action():
+@app.route('/player-action/<token>', methods=['POST'])
+def player_action(token):
     if game_data['game_over']:
         return redirect(url_for('game'))
 
@@ -256,7 +256,7 @@ def player_action():
         determine_winner()
         game_data['game_over'] = True  # Устанавливаем флаг окончания игры
 
-    return redirect(url_for('game'))
+    return redirect(url_for('game', token=token))
 
 def bot_turns():
     if game_data['game_over']:
