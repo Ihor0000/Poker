@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой профиль - Покер онлайн</title>
-    <link rel="shortcut icon" href="static/images/site.png" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/site.png') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style/profile.css') }}">
 </head>
 <body>
@@ -30,7 +30,7 @@
             <h2>Ваш профиль</h2>
             <div class="profile-card">
                 <div class="avatar">
-                    <img src="static/images/avatar.jpg" alt="Аватар">
+                    <img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="Аватар">
                 </div>
                 <div class="info">
                     <p><strong>Имя:</strong> Иванов Иван</p>
@@ -41,7 +41,6 @@
                 </div>
             </div>
         </section>
-        <!-- Статистика игрока -->
         <section class="player-stats">
             <h3>Статистика игрока</h3>
             <p>Побед: 10</p>

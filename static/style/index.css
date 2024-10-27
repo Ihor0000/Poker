@@ -140,9 +140,19 @@ footer {
 
 .upcoming-tournaments .btn {
     display: inline-block;
-    margin-top: 20px;
-    background-color: #4caf50;
+    font-size: 24px;
+    padding: 15px 40px;
+    background-color: #ff5722;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
 }
+
+.upcoming-tournaments .btn:hover {
+    background-color: #e64a19;
+}
+
 /* Галерея победителей */
 .winners-gallery {
     margin-top: 40px;

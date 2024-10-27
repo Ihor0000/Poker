@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Турниры - Покер онлайн</title>
-    <link rel="shortcut icon" href="static/images/site.png" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/site.png') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style/tournaments.css') }}">
 </head>
 <body>
@@ -50,7 +50,7 @@
             <button class="shuffle-button" type="submit">Отправить в колоду</button>
             <div class="deck">
                 <!-- Вставьте изображение колоды карт здесь -->
-                <img src="static/images/kolo.png" alt="Колода карт">
+                <img src="{{ url_for('static', filename='images/kolo.png') }}" alt="Колода карт">
             </div>  
         </section>
         

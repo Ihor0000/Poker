@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Покер онлайн</title>
-    <link rel="shortcut icon" href="static/images/site.png" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/site.png') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">
 </head>
 <body>
@@ -46,7 +46,8 @@
         <section class="timer">
             <p>Ваш ход закончится через: <span id="time">30</span> секунд</p>
         </section>
-                <!-- Ближайшие турниры -->
+
+        <!-- Ближайшие турниры -->
         <section class="upcoming-tournaments">
             <h3>Ближайшие турниры</h3>
             <ul>
@@ -56,15 +57,16 @@
             </ul>
             <a href="tournaments.html" class="btn">Зарегистрироваться</a>
         </section>
+
         <!-- Галерея победителей -->
-                <section class="winners-gallery">
-                    <h3>Наши победители</h3>
-                    <div class="gallery">
-                        <img src="static/images/winner1.jpg" alt="Победитель 1">
-                        <img src="static/images/winner2.jpg" alt="Победитель 2">
-                        <img src="static/images/winner3.jpg" alt="Победитель 3">
-                    </div>
-                </section>
+        <section class="winners-gallery">
+            <h3>Наши победители</h3>
+            <div class="gallery">
+                <img src="{{ url_for('static', filename='images/winner1.jpg') }}" alt="Победитель 1">
+                <img src="{{ url_for('static', filename='images/winner2.jpg') }}" alt="Победитель 2">
+                <img src="{{ url_for('static', filename='images/winner3.jpg') }}" alt="Победитель 3">
+            </div>
+        </section>
     </main>
 
     <footer>
