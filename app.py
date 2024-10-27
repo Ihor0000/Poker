@@ -1,12 +1,8 @@
-import pickle
-
 from flask import Flask, render_template, request, redirect, url_for, flash,session
 from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn, execute_query, fetch_one
 import random
 from werkzeug.security import generate_password_hash,check_password_hash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature, serializer
-import pymysql
-from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = '#secret#@1412'  # Замените на что-то уникальное и безопасное
@@ -140,9 +136,6 @@ def dashboard(token):
 
 @app.route('/game/<token>')
 def game(token):
-    # Восстанавливаем сессию
-    load_session(token)
-
     players = game_data['players']
     community_cards = [str(card) for card in game_data['community_cards']]
     player_hand = [str(card) for card in players[0].hand] if players else []
@@ -265,14 +258,9 @@ def player_action(token):
         game_data['round_num'] += 1
         deal_community_cards()
 
-
-    # Сохраняем игру после хода игрока и ботов
-    save_session(token)
-
-
     # Если игра завершена (раунд ривера завершён), определяем победителя
     if game_data['round_num'] == 4:
-        determine_winner(token)
+        determine_winner()
         game_data['game_over'] = True  # Устанавливаем флаг окончания игры
 
     return redirect(url_for('game', token=token))
@@ -329,7 +317,7 @@ def deal_community_cards():
     game_data['logs'].append(f"Текущий банк: {game_data['pot']}$")
     game_data['logs'].append(f"Карты на столе: {', '.join(str(card) for card in game_data['community_cards'])}")
 
-def determine_winner(token):
+def determine_winner():
     if game_data['game_over']:
         return
 
@@ -355,46 +343,6 @@ def determine_winner(token):
 
     game_data['logs'].append(f"Победитель: {best_player.name} с комбинацией '{best_hand_name}'. Из карт: {', '.join(map(str, best_hand_cards))}.")
     game_data['game_over'] = True  # Устанавливаем флаг окончания игры
-    # Сохраняем игру после хода игрока и ботов
-    save_session(token)
-
-@app.route('/save-session/<token>')
-def save_session(token):
-    try:
-        # Сериализация данных
-        serialized_data = pickle.dumps(game_data)
-
-        # Запись в базу данных
-        query = """
-        REPLACE INTO sessions (session_id, game_state, created_at)
-        VALUES (%s, %s, %s)
-        """
-        execute_query(query, (session['user_id'], serialized_data, datetime.now()))
-
-        game_data['logs'].append("Сессия успешно сохранена.")
-    except Exception as e:
-        flash(f"Ошибка при сохранении сессии: {e}", 'error')
-    return redirect(url_for('game', token=token))
-
-
-@app.route('/load-session/<token>')
-def load_session(token):
-    try:
-        query = "SELECT game_state FROM sessions WHERE session_id = %s"
-        result = fetch_one(query, (session['user_id'],))
-
-        if result:
-            # Десериализация данных
-            loaded_data = pickle.loads(result[0])
-            game_data.update(loaded_data)
-            game_data['logs'].append("Сессия успешно загружена.")
-        else:
-            flash("Сессия не найдена. Начните новую игру.", 'info')
-    except Exception as e:
-        flash(f"Ошибка при загрузке сессии: {e}", 'error')
-
-    return redirect(url_for('game', token=token))
-
 
 @app.route('/play-again/<token>', methods=['POST'])
 def play_again(token):
