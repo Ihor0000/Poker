@@ -11,7 +11,7 @@
         <h1>Дашборд</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Главная</a></li>
+                <li><a href="{{ url_for('index', token=token) }}">Главная</a></li>
                 <li><a href="{{ url_for('profile', token=token) }}">Профиль</a></li>
                 <li><a href="{{ url_for('game', token=token) }}">Играть</a></li>
                 <li><a href="{{ url_for('tournaments', token=token) }}">Турниры</a></li>

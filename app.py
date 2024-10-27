@@ -33,26 +33,33 @@ developer_mode = True  # Включение режима разработчик�
 def baseindex():
     return render_template('index.html')
 
+@app.route('/index/<token>')
+def index(token):
+    user = get_user_from_token(token)
+    if user:
+        return render_template('index.html', username=user[0], token=token)
+    return redirect(url_for('login'))
+
 @app.route('/tournaments/<token>')
 def tournaments(token):
     user = get_user_from_token(token)
     if user:
         return render_template('tournaments.html', username=user[0], token=token)
-    return render_template('tournaments.html')
+    return redirect(url_for('login'))
 
 @app.route('/rating/<token>')
 def rating(token):
     user = get_user_from_token(token)
     if user:
         return render_template('rating.html', username=user[0], token=token)
-    return render_template('rating.html')
+    return redirect(url_for('login'))
 
 @app.route('/rules/<token>')
 def rules(token):
     user = get_user_from_token(token)
     if user:
         return render_template('rules.html', username=user[0], token=token)
-    return render_template('rules.html')
+    return redirect(url_for('login'))
 
 @app.route('/profile/<token>')
 def profile(token):

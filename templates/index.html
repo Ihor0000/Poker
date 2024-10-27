@@ -12,7 +12,7 @@
         <h1>Добро пожаловать в элитный покерный клуб</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Главная</a></li>
+                <li><a href="{{ url_for('index', token=token) }}">Главная</a></li>
                 <li><a href="{{ url_for('profile', token=token) }}">Профиль</a></li>
                 <li><a href="{{ url_for('game', token=token) }}">Играть</a></li>
                 <li><a href="{{ url_for('tournaments', token=token) }}">Турниры</a></li>
@@ -32,7 +32,7 @@
             <div class="container">
                 <h2>Ощутите азарт и элегантность покера</h2>
                 <p>Присоединяйтесь к нам прямо сейчас и наслаждайтесь увлекательными играми в кругу друзей и профессионалов!</p>
-                <a href="game.html" class="btn">Начать игру</a>
+                <a href="{{ url_for('game', token=token) }}" class="btn">Играть</a>
             </div>
         </section>
 
