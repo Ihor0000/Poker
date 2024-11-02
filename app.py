@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash,session
 from PokerPy import Deck, Player, Bot, HandEvaluator, update_player_money, update_match_history, cursor, conn, execute_query, fetch_one
 import random
+import gunicorn
 from werkzeug.security import generate_password_hash,check_password_hash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature, serializer
 
@@ -360,4 +361,6 @@ def play_again(token):
     return redirect(url_for('game', token=token))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Укажите IP-адрес вашего компьютера
+    app.run(host='0.0.0.0', port=36394, debug=True)
+    #app.run(host='192.168.0.106', port=8000, debug=False)
